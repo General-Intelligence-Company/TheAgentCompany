@@ -119,14 +119,20 @@ def check_url(url):
 
 def execute_command(command):
     try:
-        print(EXECUTION_DIR, command)
+        print(f"[EXEC] Running command in {EXECUTION_DIR}: {command}")
         os.chdir(EXECUTION_DIR)
-        result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
-        return result.stdout.strip()
+        # Stream output to stdout/stderr in real-time so it appears in docker logs
+        result = subprocess.run(command, shell=True, check=True, text=True)
+        print(f"[EXEC] Command completed successfully")
+        return "Command completed successfully"
     except subprocess.CalledProcessError as e:
-        return f"Command execute failed: {e}"
+        error_msg = f"Command execute failed: {e}"
+        print(f"[EXEC ERROR] {error_msg}")
+        return error_msg
     except Exception as e:
-        return f"Error : {e}"
+        error_msg = f"Error : {e}"
+        print(f"[EXEC ERROR] {error_msg}")
+        return error_msg
 
 def async_execute_command(command):
     threading.Thread(target=execute_command, args=(command,)).start()

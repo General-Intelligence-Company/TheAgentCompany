@@ -14,19 +14,21 @@ build:
 	cp -r ../plane data/
 	wget -P ./data/ https://github.com/TheAgentCompany/the-agent-company-backup-data/releases/download/rocketchat-20241123/db.dump
 	cp ../rocketchat/data_restore/restore.sh data/restore.sh
-	docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true && docker build -t $(IMAGE_NAME) . --no-cache
+	docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true && docker build --platform linux/arm64 -t $(IMAGE_NAME) . --no-cache
 
 run:
 	docker run --rm -d \
 		--network host \
 		-v /var/run/docker.sock:/var/run/docker.sock \
-		--name $(CONTAINER_NAME) $(IMAGE_NAME)
+		--name $(CONTAINER_NAME) $(IMAGE_NAME) \
+		servers-api-server:local
 
 run-tail:
 	docker run --rm -d \
 		--network host \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		--name $(CONTAINER_NAME) $(IMAGE_NAME) \
+		servers-api-server:local \
 		tail -f /dev/null
 
 stop:
