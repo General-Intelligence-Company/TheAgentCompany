@@ -1,3 +1,14 @@
+[project]
+name = "TheAgentCompany"
+version = "1.0.0"
+description = "A benchmark for agents that could do professional jobs"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12,<3.14"
+
+[tool.setuptools]
+packages = []
+
 [tool.poetry]
 name = "TheAgentCompany"
 version = "1.0.0"
@@ -16,4 +27,9 @@ python = ">=3.12,<3.14"
 # only needed if you want to run the benchmark with OpenHands
 pyyaml = "*"
 openhands-ai = "0.42.0"
+
+[dependency-groups]
+dev = [
+    "modal>=1.2.4",
+]
 

@@ -1,0 +1,141 @@
+name: Run Evaluation with Remote Services
+on:
+  workflow_dispatch:
+    inputs:
+      task_name:
+        description: 'Task name to evaluate (without -image suffix)'
+        required: true
+        type: string
+      server_hostname:
+        description: 'Server hostname (leave empty to use secret)'
+        required: false
+        type: string
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+
+      - name: Build base image
+        working-directory: ./workspaces/base_image
+        run: make build
+
+      - name: Build task image
+        working-directory: ./workspaces/tasks/${{ inputs.task_name }}
+        run: make build
+
+      - name: Create config file
+        working-directory: ./evaluation
+        run: |
+          cat > config.toml << EOF
+          [core]
+          run_as_openhands=false
+
+          [llm.eval]
+          model="${{ secrets.LLM_MODEL }}"
+          base_url="${{ secrets.LLM_BASE_URL }}"
+          api_key="${{ secrets.LLM_API_KEY }}"
+          EOF
+
+      - name: Set directory permissions
+        working-directory: ./evaluation
+        run: |
+          mkdir -p outputs
+          chmod -R 777 outputs
+
+      - name: Setup temp directory
+        run: |
+          mkdir -p /tmp/github_job_temp
+          chmod -R 777 /tmp/github_job_temp
+          echo "TMPDIR=/tmp/github_job_temp" >> $GITHUB_ENV
+
+      - name: Determine server hostname
+        id: server
+        run: |
+          if [ -n "${{ inputs.server_hostname }}" ]; then
+            echo "hostname=${{ inputs.server_hostname }}" >> $GITHUB_OUTPUT
+          else
+            echo "hostname=${{ secrets.SERVER_HOSTNAME }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Wait for services to be ready
+        run: |
+          echo "Checking if services are ready at ${{ steps.server.outputs.hostname }}..."
+
+          for service in rocketchat owncloud gitlab plane; do
+            max_retries=30
+            retry=0
+            while [ $retry -lt $max_retries ]; do
+              if curl -s -f "http://${{ steps.server.outputs.hostname }}:2999/api/healthcheck/${service}" > /dev/null; then
+                echo "✓ ${service} is ready"
+                break
+              else
+                echo "Waiting for ${service}... (attempt $((retry+1))/${max_retries})"
+                sleep 10
+                retry=$((retry+1))
+              fi
+            done
+
+            if [ $retry -eq $max_retries ]; then
+              echo "ERROR: ${service} failed to become ready"
+              exit 1
+            fi
+          done
+
+          echo "All services are ready!"
+
+      - name: Run evaluation
+        working-directory: ./evaluation
+        run: |
+          poetry install
+          poetry run python run_eval.py \
+            --agent-llm-config eval \
+            --env-llm-config eval \
+            --server-hostname ${{ steps.server.outputs.hostname }} \
+            --task-image-name "${{ inputs.task_name }}-image"
+        env:
+          TMPDIR: /tmp/github_job_temp
+
+      - name: Read evaluation results
+        id: read-results
+        if: always()
+        working-directory: ./evaluation
+        run: |
+          RESULT_FILE="outputs/eval_${{ inputs.task_name }}-image.json"
+          if [ -f "$RESULT_FILE" ]; then
+            content=$(cat "$RESULT_FILE")
+            {
+              echo "result<<EOF"
+              echo "$content"
+              echo "EOF"
+            } >> $GITHUB_OUTPUT
+          else
+            echo "result=Error: Evaluation result file not found" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-results-${{ inputs.task_name }}
+          path: evaluation/outputs/
+
+      - name: Display results
+        if: always()
+        run: |
+          echo "Evaluation Results:"
+          echo "${{ steps.read-results.outputs.result }}"

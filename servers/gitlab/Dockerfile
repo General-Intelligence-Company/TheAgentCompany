@@ -1,4 +1,4 @@
-FROM gitlab/gitlab-ce:17.5.1-ce.0
+FROM gitlab/gitlab-ce:18.1.6-ce.0
 RUN apt-get update && apt-get install -y jq && rm -rf /var/lib/apt/lists/*
 
 ENV GITLAB_SKIP_TAIL_LOGS=true

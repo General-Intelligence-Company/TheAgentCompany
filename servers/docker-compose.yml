@@ -3,9 +3,9 @@ services:
     ############################################################
     # Uncomment build lines, and comment the image lines to
     # build the gitlab image from scratch
-    # build:
-    #   context: ./gitlab
-    image: ghcr.io/theagentcompany/servers-gitlab:1.0.0
+    build:
+      context: ./gitlab
+    # image: yrzr/gitlab-ce-arm64v8
     pull_policy: always
     ############################################################
     container_name: gitlab
