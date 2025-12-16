@@ -2,12 +2,13 @@
 Execute download.sh first
 
 Before start, remember the default download version of `plane.env` need to be changed. You should change from `NGINX_PORT=90` into `NGINX_PORT=8091`.
- 
-Run `./setup.sh`, then choose `2` start. Then you will get a new cluster
-See here for mored details `https://docs.plane.so/self-hosting/methods/docker-compose`
+
+Run `./setup.sh`, then choose `2` start. Then you will get a new cluster.
+See here for more details: <https://docs.plane.so/self-hosting/methods/docker-compose>
 
 # How to backup
-```
+
+```bash
 curl -fsSL -o setup.sh https://raw.githubusercontent.com/makeplane/plane/master/deploy/selfhost/install.sh
 
 chmod +x setup.sh
@@ -16,7 +17,8 @@ chmod +x setup.sh
 After you launching the cluster, run `./setup.sh` and choose `7` backup data. Then you will find data in backup directory. In the directory, there will be `pgdata.tar.gz`, `redisdata.tar.gz`, and `uploads.tar.gz`
 
 # How to restore from backup
-See instruction here `https://github.com/makeplane/plane/tree/preview/deploy/selfhost#restore-data`
+
+See instruction here: <https://github.com/makeplane/plane/tree/preview/deploy/selfhost#restore-data>
 First make sure you already run the cluster. Then run `./setup.sh` and choose `3` stop the cluster. 
 Secondly run `./restore.sh <path to backup folder containing *.tar.gz files>`
 In the end, start the cluster again.
@@ -24,7 +26,8 @@ In the end, start the cluster again.
 # NOTE
 Follow the instruction here: https://docs.plane.so/self-hosting/methods/docker-compose
 How to download the plane:
-```
+
+```bash
 curl -fsSL -o setup.sh https://raw.githubusercontent.com/makeplane/plane/master/deploy/selfhost/install.sh
 ```
 # Populated data
@@ -37,7 +40,7 @@ There is some populated data in Plane for task creators to have a starting point
 ## Credentials 
 Username format: `firstnamelastname` in lowercase (e.g., `emmalewis`).
 Email format: `firstname.lastname@agentcompany.com` (e.g., `emma.lewis@agentcompany.com`)
-Password: `firstname.lastname@agentcompany.com`(e.g., `emma.lewis@agentcompany.com`)
+Password: `firstname.lastname@agentcompany.com` (e.g., `emma.lewis@agentcompany.com`)
 
 ## Employee Accounts
 
@@ -64,7 +67,6 @@ Below are the usernames, email addresses, and initial passwords for each employe
 | **Alex Turner**   | `alexturner`   | `alex.turner@agentcompany.com`   | `alex.turner@agentcompany.com`   |
 | **Emma Lewis**    | `emmalewis`    | `emma.lewis@agentcompany.com`    | `emma.lewis@agentcompany.com`    |
 | **Jessica Chen**  | `jessicachen`  | `jessica.chen@agentcompany.com`  | `jessica.chen@agentcompany.com`  |
-
 
 ## Project Structure
 The projects in Plane were set up to reflect the key modules of The Agent Company's core initiatives. Each module was created as a separate project to streamline organization and focus. The projects are as follows:

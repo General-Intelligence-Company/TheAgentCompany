@@ -23,7 +23,7 @@ echo "<server-ip> the-agent-company.com" | sudo tee -a /etc/hosts
 </details>
 
 <details>
-    <summary>Windows users</summary>
+  <summary>Windows users</summary>
 
 Please use notepad or any other editor with admin privilege to open
 `c:\Windows\System32\Drivers\etc\hosts` file and append `<server-ip> the-agent-company.com`
@@ -46,23 +46,24 @@ to the file. If you are hosting the services on your local machine, use
 * service url: http://the-agent-company.com:8091
 * email: `agent@company.com`
 * password: `theagentcompany`
-* API_KEY:`plane_api_83f868352c6f490aba59b869ffdae1cf`
+* API_KEY: `plane_api_83f868352c6f490aba59b869ffdae1cf`
 
 ## RocketChat
 * service url: http://the-agent-company.com:3000
 * email: `theagentcompany`
 * password: `theagentcompany`
 
-# Troubleshooting
+## Troubleshooting
 
-## SSL Error
+### SSL Error
 
 Some modern browsers (e.g., Chrome) have strict security policies that block insecure connections. You
 might not be able to visit the services using `http` protocol directly.
 
-### Solution 1:
+#### Solution 1
+
 Open chrome://settings/security and disable "Always use secure connections". It will disable the redirect in ALL web url.
 
-### Solution 2:
+#### Solution 2
 
 Use incognito mode to open the URLs.

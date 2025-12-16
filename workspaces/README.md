@@ -14,8 +14,8 @@ This directory hosts tasks that are local to the examinee (e.g. agents or human 
 │       ├── evaluator.py
 │       ├── checkpoints.md
 │       ├── dependencies.yml
-│       ├── task.md
-|   └── ...
+│       └── task.md
+│   └── ...
 ```
 
 Explanations:

@@ -1,6 +1,5 @@
 ## Server: gitlab
 
-
 ### Starting up server
 
 Navigate to parent directory (servers), and run the below commands:

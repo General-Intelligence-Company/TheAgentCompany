@@ -5,13 +5,11 @@
   <h1 align="center">The Agent Company: Benchmarking LLM Agents on Consequential Real World Tasks</h1>
 </div>
 
-
 <p align="center">
     <a href="https://github.com/TheAgentCompany/TheAgentCompany/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/badge/License-MIT-blue">
     </a>
 </p>
-
 
 <p align="center">
 <a href="https://the-agent-company.com/">Website</a> •
@@ -32,9 +30,7 @@ by providing an extensible benchmark for evaluating AI agents that interact with
   <img src="./docs/images/TAC_architecture.png">
 </div>
 
-
 ## Quick Start
-
 
 ### Step 1: Setup the Servers
 
@@ -61,7 +57,6 @@ curl -fsSL https://github.com/TheAgentCompany/the-agent-company-backup-data/rele
 curl -fsSL -o setup.bat https://github.com/TheAgentCompany/the-agent-company-backup-data/releases/download/setup-script-20241208/setup.bat && setup.bat
 ```
 </details>
-
 
 After a few minutes, you should have all services running, including GitLab, Plane, ownCloud, RocketChat,
 all with pre-baked data. Please check out the [SERVER SETUP DOC](./docs/SETUP.md) for more details and troubleshooting guide, especially if you are using Mac or Windows.
@@ -199,7 +194,8 @@ Please check out the [EVALUATION DOC](./docs/EVALUATION.md) for more details.
 
 
 ## Cite
-```
+
+```bibtex
 @misc{xu2024theagentcompanybenchmarkingllmagents,
       title={TheAgentCompany: Benchmarking LLM Agents on Consequential Real World Tasks}, 
       author={Frank F. Xu and Yufan Song and Boxuan Li and Yuxuan Tang and Kritanjali Jain and Mengxue Bao and Zora Z. Wang and Xuhui Zhou and Zhitong Guo and Murong Cao and Mingyang Yang and Hao Yang Lu and Amaad Martin and Zhe Su and Leander Maben and Raj Mehta and Wayne Chi and Lawrence Jang and Yiqing Xie and Shuyan Zhou and Graham Neubig},

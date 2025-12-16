@@ -30,7 +30,7 @@ base_url="<base_url>"
 api_key="<api_key>"
 ```
 
-you can add more groups as needed.
+You can add more groups as needed.
 
 ## Run Evaluation
 
